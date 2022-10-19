@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  redisdb:
+    image: redis:7.0.5
+    restart: unless-stopped
+    ports:
+      - 6380:6379
+    volumes:
+      - ~/redisdb:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+  mysqldb:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_DATABASE=$MYSQL_DBNAME
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+    volumes:
+      - ~/mysqldb:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      timeout: 20s
+      retries: 5
+  app:
+    container_name: app
+    restart: on-failure
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      - STAGE_STATUS=prod
