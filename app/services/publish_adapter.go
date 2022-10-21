@@ -108,6 +108,8 @@ func (s publishService) GetByCategoryAndPubYear(category, pubyear int) ([]Publis
 			AuthorTh:    repo_result.AuthorTh,
 			AuthorEn:    repo_result.AuthorEn,
 			Link:        repo_result.Link,
+			CreatedAt:   repo_result.CreatedAt,
+			UpdatedAt:   repo_result.UpdatedAt,
 		})
 	}
 
@@ -137,6 +139,8 @@ func (s publishService) GetByBibid(bibid string) (*Publish, error) {
 		AuthorTh:    repo_result.AuthorTh,
 		AuthorEn:    repo_result.AuthorEn,
 		Link:        repo_result.Link,
+		CreatedAt:   repo_result.CreatedAt,
+		UpdatedAt:   repo_result.UpdatedAt,
 	}
 
 	return &serv_result, nil
@@ -172,6 +176,8 @@ func (s publishService) GetPaginateByOptions(page, limit int, options map[string
 			AuthorTh:    repo_result_row.AuthorTh,
 			AuthorEn:    repo_result_row.AuthorEn,
 			Link:        repo_result_row.Link,
+			CreatedAt:   repo_result_row.CreatedAt,
+			UpdatedAt:   repo_result_row.UpdatedAt,
 		})
 	}
 
