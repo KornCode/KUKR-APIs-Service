@@ -195,8 +195,7 @@ func (h publishHandler) SyncDataSource(c *fiber.Ctx) error {
 		})
 	}
 
-	err := h.publishService.SyncDataSource(js.PubYear)
-	if err != nil {
+	if err := h.publishService.SyncDataSource(js.PubYear); err != nil {
 		return handler.HandleError(c, err)
 
 	}
