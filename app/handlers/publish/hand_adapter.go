@@ -17,7 +17,9 @@ func NewPublishHandler(publishService publishsrv.PublishService) publishHandler 
 func (h publishHandler) CreateOne(c *fiber.Ctx) error {
 	js := new(jsonPublishCreateOne)
 	if err := c.BodyParser(js); err != nil {
-		return err
+		return c.Status(406).JSON(fiber.Map{
+			"error": err,
+		})
 	}
 	if err := validateStruct(js); err != nil {
 		return c.Status(406).JSON(fiber.Map{
@@ -51,7 +53,9 @@ func (h publishHandler) CreateOne(c *fiber.Ctx) error {
 func (h publishHandler) UpdateOneByPK(c *fiber.Ctx) error {
 	js := new(jsonPublishUpdateOneByPK)
 	if err := c.BodyParser(js); err != nil {
-		return err
+		return c.Status(406).JSON(fiber.Map{
+			"error": err,
+		})
 	}
 	if err := validateStruct(js); err != nil {
 		return c.Status(406).JSON(fiber.Map{
@@ -83,7 +87,9 @@ func (h publishHandler) UpdateOneByPK(c *fiber.Ctx) error {
 func (h publishHandler) DeleteOneByPK(c *fiber.Ctx) error {
 	js := new(jsonPublishDeleteOneByPK)
 	if err := c.BodyParser(js); err != nil {
-		return err
+		return c.Status(406).JSON(fiber.Map{
+			"error": err,
+		})
 	}
 	if err := validateStruct(js); err != nil {
 		return c.Status(406).JSON(fiber.Map{
@@ -179,7 +185,9 @@ func (h publishHandler) GetPaginateByOptions(c *fiber.Ctx) error {
 func (h publishHandler) SyncDataSource(c *fiber.Ctx) error {
 	js := new(jsonPublishPubYear)
 	if err := c.BodyParser(js); err != nil {
-		return err
+		return c.Status(406).JSON(fiber.Map{
+			"error": err,
+		})
 	}
 	if err := validateStruct(js); err != nil {
 		return c.Status(406).JSON(fiber.Map{
