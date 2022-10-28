@@ -1,15 +1,16 @@
-package handler
+package publishhand
 
 import (
-	service "github.com/KornCode/KUKR-APIs-Service/app/services"
+	handler "github.com/KornCode/KUKR-APIs-Service/app/handlers"
+	publishsrv "github.com/KornCode/KUKR-APIs-Service/app/services/publish"
 	"github.com/gofiber/fiber/v2"
 )
 
 type publishHandler struct {
-	publishService service.PublishService
+	publishService publishsrv.PublishService
 }
 
-func NewPublishHandler(publishService service.PublishService) publishHandler {
+func NewPublishHandler(publishService publishsrv.PublishService) publishHandler {
 	return publishHandler{publishService}
 }
 
@@ -24,7 +25,7 @@ func (h publishHandler) CreateOne(c *fiber.Ctx) error {
 		})
 	}
 
-	publish := service.Publish{
+	publish := publishsrv.Publish{
 		Category:    js.Category,
 		Text:        js.Text,
 		Bibid:       js.Bibid,
@@ -39,7 +40,7 @@ func (h publishHandler) CreateOne(c *fiber.Ctx) error {
 
 	serv_result_pk, err := h.publishService.CreateOne(&publish)
 	if err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.Status(201).JSON(fiber.Map{"data": fiber.Map{
@@ -58,7 +59,7 @@ func (h publishHandler) UpdateOneByPK(c *fiber.Ctx) error {
 		})
 	}
 
-	publish := service.Publish{
+	publish := publishsrv.Publish{
 		ID:          js.ID,
 		Category:    js.Category,
 		Text:        js.Text,
@@ -73,7 +74,7 @@ func (h publishHandler) UpdateOneByPK(c *fiber.Ctx) error {
 	}
 
 	if err := h.publishService.UpdateOneByPK(publish.ID, &publish); err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.SendStatus(200)
@@ -91,7 +92,7 @@ func (h publishHandler) DeleteOneByPK(c *fiber.Ctx) error {
 	}
 
 	if err := h.publishService.DeleteOneByPK(js.ID); err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.SendStatus(200)
@@ -112,7 +113,7 @@ func (h publishHandler) GetByCategoryAndPubYear(c *fiber.Ctx) error {
 
 	serv_results, err := h.publishService.GetByCategoryAndPubYear(qs.Category, qs.PubYear)
 	if err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.Status(200).JSON(fiber.Map{"data": serv_results})
@@ -133,7 +134,7 @@ func (h publishHandler) GetByBibid(c *fiber.Ctx) error {
 
 	serv_result, err := h.publishService.GetByBibid(qs.Bibid)
 	if err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.Status(200).JSON(fiber.Map{"data": serv_result})
@@ -169,7 +170,7 @@ func (h publishHandler) GetPaginateByOptions(c *fiber.Ctx) error {
 		},
 	)
 	if err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 	}
 
 	return c.Status(200).JSON(fiber.Map{"data": serv_result})
@@ -188,7 +189,7 @@ func (h publishHandler) SyncDataSource(c *fiber.Ctx) error {
 
 	err := h.publishService.SyncDataSource(js.PubYear)
 	if err != nil {
-		return handleError(c, err)
+		return handler.HandleError(c, err)
 
 	}
 

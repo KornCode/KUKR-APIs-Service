@@ -1,4 +1,4 @@
-package handler
+package publishhand
 
 import (
 	"github.com/go-playground/validator/v10"

@@ -1,4 +1,4 @@
-package repository
+package publishrepo
 
 import (
 	"context"
@@ -17,7 +17,7 @@ type publishRepositoryDB struct {
 	rdCache *redis.Client
 }
 
-func NewPublishRepositoryDB(sqlDB *gorm.DB, rdCache *redis.Client) publishRepositoryDB {
+func NewPublishRepository(sqlDB *gorm.DB, rdCache *redis.Client) publishRepositoryDB {
 	return publishRepositoryDB{sqlDB, rdCache}
 }
 

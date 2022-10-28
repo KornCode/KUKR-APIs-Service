@@ -1,4 +1,4 @@
-package repository
+package publishrepo
 
 import "gorm.io/gorm"
 

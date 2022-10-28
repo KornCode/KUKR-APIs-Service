@@ -1,4 +1,4 @@
-package service
+package publishserv
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	repository "github.com/KornCode/KUKR-APIs-Service/app/repositories"
+	publishrpt "github.com/KornCode/KUKR-APIs-Service/app/repositories/publish"
 )
 
 type publishApiReadBody struct {
@@ -31,7 +31,7 @@ type publishApiReadBody struct {
 	} `json:"data"`
 }
 
-func publishSynApiFetchAll(category, pub_year int, publishes *[]repository.Publish) {
+func publishSynApiFetchAll(category, pub_year int, publishes *[]publishrpt.Publish) {
 	api_uri := os.Getenv("PUBLISH_SOURCE_API_URI")
 
 	var page int = 1
@@ -68,7 +68,7 @@ func publishSynApiFetchAll(category, pub_year int, publishes *[]repository.Publi
 		}
 
 		for _, resp_data := range response_read.Data {
-			*publishes = append(*publishes, repository.Publish{
+			*publishes = append(*publishes, publishrpt.Publish{
 				Category:    category,
 				Text:        response_read.Text,
 				Bibid:       resp_data.Bibid,

@@ -1,9 +1,9 @@
 package routes
 
 import (
-	handler "github.com/KornCode/KUKR-APIs-Service/app/handlers"
-	repository "github.com/KornCode/KUKR-APIs-Service/app/repositories"
-	service "github.com/KornCode/KUKR-APIs-Service/app/services"
+	publishhdl "github.com/KornCode/KUKR-APIs-Service/app/handlers/publish"
+	publishrpt "github.com/KornCode/KUKR-APIs-Service/app/repositories/publish"
+	publishsrv "github.com/KornCode/KUKR-APIs-Service/app/services/publish"
 	"github.com/go-redis/redis/v9"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -12,9 +12,9 @@ import (
 )
 
 func SetupPublishRoutes(r fiber.Router, sql_db *gorm.DB, rd_cache *redis.Client) {
-	publishRepository := repository.NewPublishRepositoryDB(sql_db, rd_cache)
-	publishService := service.NewPublishService(publishRepository)
-	publishHandler := handler.NewPublishHandler(publishService)
+	publishRepository := publishrpt.NewPublishRepository(sql_db, rd_cache)
+	publishService := publishsrv.NewPublishService(publishRepository)
+	publishHandler := publishhdl.NewPublishHandler(publishService)
 
 	r.Use(
 		cors.New(),

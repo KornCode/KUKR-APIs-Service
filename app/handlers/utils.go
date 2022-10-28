@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func handleError(c *fiber.Ctx, err error) error {
+func HandleError(c *fiber.Ctx, err error) error {
 	switch e := err.(type) {
 	case errs.RequestError:
 		return c.Status(e.StatusCode).JSON(fiber.Map{

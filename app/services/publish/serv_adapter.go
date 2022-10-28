@@ -1,24 +1,25 @@
-package service
+package publishserv
 
 import (
 	"strings"
 	"sync"
 
 	"github.com/KornCode/KUKR-APIs-Service/app/errs"
-	repository "github.com/KornCode/KUKR-APIs-Service/app/repositories"
+	publishrpt "github.com/KornCode/KUKR-APIs-Service/app/repositories/publish"
+	service "github.com/KornCode/KUKR-APIs-Service/app/services"
 	"github.com/KornCode/KUKR-APIs-Service/pkg/logs"
 )
 
 type publishService struct {
-	publishRepository repository.PublishRepository
+	publishRepository publishrpt.PublishRepository
 }
 
-func NewPublishService(publishRepository repository.PublishRepository) publishService {
+func NewPublishService(publishRepository publishrpt.PublishRepository) publishService {
 	return publishService{publishRepository}
 }
 
 func (s publishService) CreateOne(publish *Publish) (uint, error) {
-	repo_row := repository.Publish{
+	repo_row := publishrpt.Publish{
 		Category:    publish.Category,
 		Text:        publish.Text,
 		Bibid:       publish.Bibid,
@@ -47,7 +48,7 @@ func (s publishService) CreateOne(publish *Publish) (uint, error) {
 }
 
 func (s publishService) UpdateOneByPK(pk uint, publish *Publish) error {
-	repo_row := repository.Publish{
+	repo_row := publishrpt.Publish{
 		Category:    publish.Category,
 		Text:        publish.Text,
 		Bibid:       publish.Bibid,
@@ -181,7 +182,7 @@ func (s publishService) GetPaginateByOptions(page, limit int, options map[string
 		})
 	}
 
-	total_pages := calcPaginateTotalPages(repo_result.TotalRows, limit)
+	total_pages := service.CalcPaginateTotalPages(repo_result.TotalRows, limit)
 	serv_result := PublishPaginate{
 		Page:       page,
 		Limit:      limit,
@@ -195,7 +196,7 @@ func (s publishService) GetPaginateByOptions(page, limit int, options map[string
 }
 
 func (s publishService) SyncDataSource(pub_year int) error {
-	repo_rows := []repository.Publish{}
+	repo_rows := []publishrpt.Publish{}
 
 	var wg sync.WaitGroup
 	for _, category := range [...]int{1, 2, 3, 4} {
